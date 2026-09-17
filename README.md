@@ -79,22 +79,23 @@ Errors go to stderr as `error: <command> failed (<status>): <code>` and exit 1, 
 
 ## How it works, and why it is safe
 
-Every episode is made by [AngelQ](https://angelq.ai), the same engine behind the Angelcast app. It creates each podcast for the specific child: their age sets the vocabulary and pacing, and the podcasts you've created in the past create a foundation each podcast builds on. Every script is checked against AngelQ's platform rules before it is voiced, so nothing reaches your kids that you would not want them to hear.
+Every episode is made by [AngelQ](https://angelq.ai), the same engine behind the Angelcast app. It writes for the specific child: their age sets the vocabulary and pacing, and the interests you add shape the stories and examples. Every script is checked against AngelQ's kid-safety rules before it is voiced, so nothing reaches your kids that you would not want them to hear.
 
 ## Limits
-Each family can generate up to 30 episodes per rolling 7 days. Plans and pricing are at [angelq.ai](https://angelq.ai).
+
+Each family can generate up to 36 episodes per rolling 7 days. Plans and pricing are at [angelq.ai](https://angelq.ai).
 
 ## Help
 
 - Full command reference: [docs/CLI.md](docs/CLI.md)
-- Everything else: support@angelq.ai
+- Bugs and feature requests: [issues](https://github.com/myangel-ai/angelcast-cli/issues)
+- Everything else: hello@angelq.ai
 
 If your kids loved an episode, tell us with #angelcast. It is the best way to help other families find this.
 
 ## We build safety in the open
-AngelQ co-created [KidRails](https://github.com/arcee-ai/KidRails) with [Arcee AI](https://www.arcee.ai): an open-source, child-safe language model and the training data and evals behind it, released so anyone can audit how age-appropriate AI should behave. The same thinking shapes every Angelcast episode.
 
-AngelQ app is available on the Apple Store! It is a ai powered browser for kids. We allow kids to explore the things they love through chat, image, video, and research modes. 
+AngelQ co-created [KidRails](https://github.com/arcee-ai/KidRails) with [Arcee AI](https://www.arcee.ai): an open-source, child-safe language model and the training data and evals behind it, released so anyone can audit how age-appropriate AI should behave. The same thinking shapes every Angelcast episode.
 
 ## License
 
