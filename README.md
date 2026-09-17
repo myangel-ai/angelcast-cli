@@ -52,13 +52,13 @@ Out of ideas? `angelcast podcast topic-suggestions` returns prompts picked for y
 - **Play or download.** `podcast play` streams through your system player; `podcast download -o ./episodes/` keeps the mp3.
 - **Personalize.** `family update --customization "Ada loves frogs, space, and silly voices"` steers every future episode.
 - **Track listening.** `podcast playbacks` shows what was played, where, and when.
-- **Script everything.** Every command takes `--format json` and returns stable exit codes.
+- **Script everything.** Every command takes `--format json`; failures exit non-zero with the error code on stderr.
 
 The full reference is in [docs/CLI.md](docs/CLI.md), or run `angelcast docs` for the same text offline.
 
 ## Use it from an agent
 
-Angelcast is built to be driven by scripts and AI agents as much as by people. Output is JSON on request, errors are structured, and exit codes are stable.
+Angelcast is built to be driven by scripts and AI agents as much as by people. Output is JSON on request, and every failure exits non-zero with a greppable error code.
 
 ```sh
 # Create an episode and capture its id
@@ -75,7 +75,7 @@ The `angelcast` CLI is installed. Use `--format json` for every call and `angelc
 Never run `podcast delete` or `family remove-member` without confirming with me first.
 ```
 
-Errors come back as `{"error": "<code>", "message": "..."}` with a non-zero exit code. Hitting the usage cap returns `weekly_limit_reached`; `angelcast family usage` shows what is left and when it resets.
+Errors go to stderr as `error: <command> failed (<status>): <code>` and exit 1, so an agent can grep the code without parsing. Usage mistakes exit 2. Hitting the usage cap shows `weekly_limit_reached`; `angelcast family usage` reports what is left and when it resets.
 
 ## How it works, and why it is safe
 
