@@ -23,17 +23,22 @@ Debian and Ubuntu users can grab the `.deb` from the [latest release](https://gi
 ## Your first episode
 
 ```sh
-# 1. Sign up. You get a magic link by email; no password to remember.
-angelcast family onboard --family-name Smith --email smith@example.com
+# 1. Sign up with your first listener. Age shapes the vocabulary, pacing, and topics.
+#    A magic link lands in your inbox; no password to remember.
+angelcast family onboard --family-name Smith --email smith@example.com \
+  --child-name Ada --child-birth-month 4 --child-birth-year 2018
 
-# 2. Tell Angelcast who is listening. Age shapes the vocabulary, pacing, and topics.
-angelcast family add-member --first-name Ada --birth-month 4 --birth-year 2018
+# 2. Make Ada's first episode. --i lets you pick her from a list instead of pasting an id.
+angelcast podcast create-ftue --prompt "outer space" --i
 
-# 3. Ask for an episode. Any question a kid would ask works.
-angelcast podcast create --prompt "Why do volcanoes erupt?"
-
-# 4. Listen. Episodes take a few minutes to generate; --wait holds until it is ready.
+# 3. Listen. Episodes take a few minutes; --wait holds until it is ready.
 angelcast podcast play <podcast-id> --wait
+
+# 4. Add a sibling.
+angelcast family add-member --first-name Sam --birth-month 9 --birth-year 2021
+
+# 5. Make an episode for both of them. --i shows a checklist of your kids.
+angelcast podcast create --prompt "Why do volcanoes erupt?" --audience multi-kid --i
 ```
 
 Already have an account from the app? Skip step 1 and run `angelcast family login --email you@example.com`.
