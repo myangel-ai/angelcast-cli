@@ -1,12 +1,42 @@
-# angelcast
+<a href="https://angelcast.rocks">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/banner-dark.png">
+    <img alt="AngelCast — screen-free audio for your kids, from the terminal" src="docs/assets/readme/banner-light.png" width="100%">
+  </picture>
+</a>
 
-**Angelcast from the terminal.** Generate, schedule, and play fun, personalized, kid-safe podcasts made by [AngelQ](https://angelq.ai) for your family, with JSON output built for agents and scripts.
+<p align="center">
+  <b>angelcast</b> turns a topic into a short audio episode written for one child's age, checked by AngelQ's kid-safety layer (built on <a href="https://github.com/arcee-ai/KidRails">KidRails</a>), and voiced by two hosts.<br>
+  Open source. Built for your agent to run.
+</p>
 
-[![Release](https://img.shields.io/github/v/release/myangel-ai/angelcast-cli)](https://github.com/myangel-ai/angelcast-cli/releases)
-[![Build](https://github.com/myangel-ai/angelcast-cli/actions/workflows/release.yml/badge.svg)](https://github.com/myangel-ai/angelcast-cli/actions)
-[![License](https://img.shields.io/github/license/myangel-ai/angelcast-cli)](LICENSE)
+<p align="center">
+  <a href="https://angelcast.rocks"><b>Website</b></a> •
+  <a href="docs/CLI.md"><b>CLI reference</b></a> •
+  <a href="skills/angelcast/SKILL.md"><b>Agent skill</b></a> •
+  <a href="PRIVACY.md"><b>What we keep</b></a> •
+  <a href="https://github.com/arcee-ai/KidRails"><b>KidRails</b></a> •
+  <a href="https://github.com/myangel-ai/angelcast-cli/issues"><b>Issues</b></a> •
+  <a href="https://www.angelq.ai"><b>AngelQ</b></a>
+</p>
 
-![angelcast demo: install, sign in, create an episode about volcanoes, play it](docs/demo.gif)
+<p align="center">
+  <a href="LICENSE"><img alt="License Apache-2.0" src="docs/assets/readme/badge-license.png" height="20"></a>
+  <img alt="brew install myangel-ai/tap/angelcast" src="docs/assets/readme/badge-brew.png" height="20">
+  <img alt="Linux x86_64 and aarch64" src="docs/assets/readme/badge-linux.png" height="20">
+  <img alt="Agent skill: npx skills add" src="docs/assets/readme/badge-skill.png" height="20">
+  <img alt="Ages 5 to 12" src="docs/assets/readme/badge-ages.png" height="20">
+</p>
+
+```sh
+brew install myangel-ai/tap/angelcast
+angelcast family onboard --family-name Smith --email smith@example.com \
+  --child-name Mia --child-birth-month 6 --child-birth-year 2019
+angelcast podcast create --prompt "why do cats purr" --audience family
+angelcast podcast download <podcast-id> --wait
+```
+
+A few minutes later there is an MP3 in your working directory. Put it on a Yoto Card, your device, or anything that plays audio.
 
 ## Install
 
@@ -45,12 +75,36 @@ Already have an account from the app? Skip step 1 and run `angelcast family logi
 
 Out of ideas? `angelcast podcast topic-suggestions` returns prompts picked for your kids' ages and interests.
 
+## Seven show formats
+
+The topic picks the format. Pin one with `--show-format`, or leave it out and the classifier decides.
+
+<table>
+  <tr>
+    <td><img src="docs/assets/readme/cover-fact_splat.png" alt="Fact Splat — Big facts. Zero warning."></td>
+    <td><img src="docs/assets/readme/cover-good_news_club.png" alt="Good News Club — Only the good stuff."></td>
+    <td><img src="docs/assets/readme/cover-case_closed.png" alt="Case Closed — Every mystery leaves a clue."></td>
+    <td><img src="docs/assets/readme/cover-sports_report.png" alt="Sports Report — Big plays. Bigger stories."></td>
+    <td><img src="docs/assets/readme/cover-around_the_fire.png" alt="Around the Fire — History, told right."></td>
+    <td><img src="docs/assets/readme/cover-free_form.png" alt="Free Form — Any topic. A story worth telling."></td>
+    <td><img src="docs/assets/readme/cover-moonrise.png" alt="Moonrise — Stories for sleepy heads."></td>
+  </tr>
+  <tr>
+    <td align="center"><code>fact-splat</code></td>
+    <td align="center"><code>good-news</code></td>
+    <td align="center"><code>case-closed</code></td>
+    <td align="center"><code>sports-report</code></td>
+    <td align="center"><code>around-the-fire</code></td>
+    <td align="center"><code>free-form</code></td>
+    <td align="center"><code>story</code></td>
+  </tr>
+</table>
+
 ## What you can do
 
-- **Create an episode from a prompt.** For one kid, several kids, or the whole family, in show formats like `story` and `fact-splat`.
-- **Subscribe to a topic.** `angelcast subscription create --topic dinosaurs` delivers fresh episodes every week.
+- **Create an episode from a prompt.** For one kid, several kids, or the whole family, in any of the seven formats above.
+- **Run a series.** `angelcast series create --prompt "the solar system, one planet at a time"` plans a linked run of episodes that remember each other.
 - **Play or download.** `podcast play` streams through your system player; `podcast download -o ./episodes/` keeps the mp3.
-- **Personalize.** `family update --customization "Ada loves frogs, space, and silly voices"` steers every future episode.
 - **Track listening.** `podcast playbacks` shows what was played, where, and when.
 - **Script everything.** Every command takes `--format json`; failures exit non-zero with the error code on stderr.
 
@@ -68,7 +122,13 @@ id=$(angelcast podcast create --prompt "How do bees make honey?" --format json |
 angelcast podcast play "$id" --wait
 ```
 
-Using Claude Code, Codex, or another coding agent? Add this to your project instructions and the agent can run the CLI on your behalf:
+Using Claude Code, Codex, or another coding agent? Install the [agent skill](skills/angelcast/SKILL.md):
+
+```sh
+npx skills add myangel-ai/angelcast-cli
+```
+
+Or add this to your project instructions and the agent can run the CLI on your behalf:
 
 ```markdown
 The `angelcast` CLI is installed. Use `--format json` for every call and `angelcast docs` for the reference.
