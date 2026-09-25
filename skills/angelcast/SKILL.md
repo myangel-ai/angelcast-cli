@@ -1,124 +1,157 @@
 ---
 name: angelcast
-description: Make screen-free, kid-safe audio episodes (MP3) for a specific child from a topic, a lesson file, or a request like "make Mia an episode about volcanoes." Use when a parent asks for an audio episode, a podcast for their kid, a bedtime story, a lesson turned into audio, or a series/daily subscription. Requires the `angelcast` CLI on PATH and a logged-in family session.
-metadata:
-  openclaw:
-    requires:
-      bins: ["angelcast"]
-    install:
-      - kind: brew
-        formula: myangel-ai/tap/angelcast
-        os: ["darwin", "linux"]
-      - kind: download
-        url: https://github.com/myangel-ai/angelcast-cli/releases/latest/download/angelcast-x86_64-unknown-linux-musl.tar.gz
-        sha256: "FILL_AT_RELEASE"
-        archive: tar.gz
-        os: ["linux"]
+description: Walk a parent from zero to kid-safe audio episodes with the angelcast CLI - install it, onboard or log in the family, turn any input (a PDF, a teacher's email, a travel plan, a book, local places, a plain topic) into episodes, and deliver the MP3s to a folder or straight onto a Yoto player. Use when someone mentions angelcast, AngelCast, a podcast or bedtime story for their kid, turning a lesson or trip into audio, or putting episodes on a Yoto.
 ---
 
-# angelcast — audio episodes for kids, from the CLI
+# angelcast: episodes for kids, from the terminal
 
-`angelcast` turns a topic into a short two-host audio episode written for one
-child's age, checks the script with KidRails (AngelQ's child-safety layer),
-voices it, and gives you an MP3. Generation runs on AngelCast's API; the CLI
-is the client. Every command accepts `--format json`. Nothing prompts
-interactively unless `--i` is passed, so never pass `--i`.
+`angelcast` turns a prompt into a short two-host audio episode written for a
+child's age, checks the script against AngelQ's kid-safety rules, voices it,
+and hands back an MP3. You drive the CLI for the parent, end to end: install,
+account, episodes, delivery. Generation takes a few minutes per episode.
 
-## Before you start
+Always pass `--format json`. Never pass `--i` (it prompts interactively).
+Errors print `error: <command> failed (<status>): <tag>` on stderr and exit 1;
+usage mistakes exit 2.
 
-1. Confirm the binary and session:
-   ```
-   angelcast --version
-   angelcast whoami --format json
-   ```
-   A 401 means no session. Tell the parent to run
-   `angelcast family login --email <email>` (or `angelcast family onboard …`
-   for a new family) and stop. Do not attempt logins yourself; you do not
-   hold the parent's credentials.
-2. List the children so you use the right `member_id`:
-   ```
-   angelcast family members --format json
-   ```
-   Match on first name. If two children match or none match, ask the parent.
+## 1. Install
 
-## Make one episode
+Check first: `angelcast --version`. If it is missing:
 
-1. Write the prompt. Rules:
-   - One topic per episode. Put the learning goal in plain words if there is
-     one ("teach the difference between 6 and 9", "why the sky is blue").
-   - If the parent gave you a lesson file, summarize it into a prompt of
-     under 80 words: the concept, 2–3 key facts or vocabulary words, and the
-     goal. Do not paste the whole lesson.
-   - Never include the child's last name, address, school, or anything the
-     parent has marked as off-limits for that child.
-   - Do not add jokes, characters, or framing of your own; the show formats
-     handle that.
-2. Create it (returns immediately with a pending episode):
-   ```
-   angelcast podcast create --prompt "<prompt>" --audience one-kid --member-id <member_id> --format json
-   ```
-   Options:
-   - `--audience family` (no `--member-id`) for an episode aimed at all kids
-     in the family; `--audience multi-kid --member-id A --member-id B` for
-     some of them.
-   - `--show-format <fact-splat|case-closed|sports-report|good-news|around-the-fire|story|free-form>`
-     to pin a format. Omit it to let the classifier choose (`app-decides`).
-     Use the table below only when the parent asks for a specific feel.
-3. Read the `id` from the JSON, then download when it's ready:
-   ```
-   angelcast podcast download <id> --wait --wait-timeout 600 -o <directory>/ --format json
-   ```
-   Generation usually takes a few minutes. The JSON line contains `title`,
-   `path`, and `bytes`. Put the file where the parent keeps their episodes
-   (their vault, a shared folder, a Slack channel), not in a temp directory.
-4. Report back with the title, the path, and the prompt you used. Do not
-   play, publish, upload, or hand the episode to a child's device unless the
-   parent has asked you to do that for this family. Default is: the parent
-   listens first.
+- Homebrew present (`command -v brew`): `brew install myangel-ai/tap/angelcast`
+- Otherwise: `curl -fsSL https://angelq.ai/install.sh | sh`
+- Debian/Ubuntu users who prefer a package: the `.deb` on
+  https://github.com/myangel-ai/angelcast-cli/releases/latest
 
-## Show formats (only when the parent asks for a feel)
+macOS and Linux (x86_64 and arm64) only. No Windows build; suggest WSL.
+Re-run `angelcast --version` to confirm.
+
+## 2. Account
+
+`angelcast whoami --format json`. A 401 means no session.
+
+**New family.** Ask for: family (last) name, email, and for the first child a
+first name, birth month (1-12) and birth year. Nothing else is needed.
+
+The CLI needs a login password. `--password` prompts with echo off, which
+fails in an agent shell (`stdin is not a terminal`), so generate one and pipe
+it with `--password-stdin`; the password never touches the command line:
+
+```
+PW=$(openssl rand -base64 18 | tr -d '/+=')
+printf '%s\n' "$PW" | angelcast family onboard --family-name <Name> --email <email> \
+  --password-stdin --child-name <First> --child-birth-month <M> --child-birth-year <YYYY> --format json | tail -n +2
+echo "$PW"
+```
+
+Show the password once and tell the parent to store it; it is their
+`family login` password from now on. If the parent would rather choose it,
+print the command with `--password` for them to run in their own terminal.
+`tail -n +2` skips the session cookie printed on the first line; the family
+JSON with each member's `id` follows, and the session is saved.
+
+**Existing app account.** `printf '%s\n' "$PW" | angelcast family login --email <email> --password-stdin`.
+If it says `no CLI password set for this email`, the parent emails
+support@angelq.ai for one; stop there.
+
+**More kids.** `angelcast family add-member --first-name <First> --birth-month <M> --birth-year <YYYY> --format json`.
+
+Then `angelcast family members --format json` and keep the `id` for each child.
+
+## 3. Turn the input into episodes
+
+The input can be anything: a PDF, a teacher's email, an itinerary, a book, a
+list of local places, a topic. Read it yourself (Read handles PDFs) and write
+the prompts. Do not ask the parent to approve a plan; ask only when something
+is missing (which child, how many episodes, a folder). Then create.
+
+Prompt rules:
+
+- One topic per episode, under 80 words. State the concept, two or three key
+  facts or vocabulary words, and the learning goal if there is one. Never
+  paste the source; distil it.
+- Never include the child's last name, address, school, or anything the
+  parent marked off-limits.
+- Do not add jokes, characters, or framing; the show formats do that.
+- Interests the parent mentioned can shape examples ("uses a soccer example").
+
+Audience: `--audience one-kid --member-id <id>` for one child,
+`--audience multi-kid --member-id A --member-id B` for some,
+`--audience family` (no member ids) for everyone.
+
+Show format: omit `--show-format` unless the parent asks for a feel.
 
 | Format | Use for |
 |---|---|
 | `fact-splat` | surprising facts, science, how things work |
 | `case-closed` | mysteries, puzzles, a whodunit (not for kids who scare easily) |
 | `sports-report` | sports news, players, a game recap |
-| `good-news` | uplifting news, animals, kindness stories |
-| `around-the-fire` | history, battles, explorers, big events told as a story |
+| `good-news` | uplifting news, animals, kindness |
+| `around-the-fire` | history, explorers, big events told as a story |
 | `story` | a bedtime or original story |
-| `free-form` | anything that doesn't fit above |
+| `free-form` | anything else |
 
-## Series and daily episodes
+**Series or separate podcasts.** Decide, and say why in one line:
 
-- A linked run of episodes on one theme (memory carries across episodes):
-  ```
-  angelcast series create --prompt "<theme and goal>" --audience one-kid --member-id <id> --format json
-  angelcast series podcasts <series_id> --format json
-  ```
-  `series create` blocks for tens of seconds while the planner runs.
-- New episodes on a topic every day, no create step:
-  ```
-  angelcast subscription create --topic "<topic>" --audience one-kid --member-id <id> --format json
-  angelcast subscription list --format json
-  angelcast subscription unsubscribe <series_id>
-  ```
-  Only create a subscription when the parent explicitly asks for recurring
-  episodes; it keeps generating until unsubscribed.
+- Series when episodes should build on each other and are heard in order: a
+  book chapter by chapter, a road trip stop by stop, a unit of lessons.
+  `angelcast series create --prompt "<theme, order, and goal>" --audience ... --format json`
+  blocks for tens of seconds while the planner runs, then
+  `angelcast series podcasts <series_id> --format json` lists the episodes.
+- Separate podcasts when the topics stand alone: five local landmarks, a
+  handful of questions from a teacher's email.
+  `angelcast podcast create --prompt "<prompt>" --audience ... --format json`
+  returns at once with a pending podcast and its `id`.
 
-## Errors and limits
+Daily subscriptions (`angelcast subscription create`) exist only in preview
+builds and keep generating until unsubscribed. Mention them only if the parent
+asks for recurring episodes and the command is present in `angelcast --help`.
 
-- `401`: session missing or expired → tell the parent to log in (see above).
-- `weekly_limit_reached`: the family has used its 36 episodes for the rolling
-  week. Tell the parent (`angelcast family usage` shows when it resets); do
-  not retry.
-- Status `failed` or `timed_out` on download: retry the download once with
-  `--wait`. If it fails again, report the id to the parent.
-- `podcast delete`, `series delete`, and `family remove-member` are
-  destructive. Never run them unless the parent names the exact item.
-- Do not use any `admin` subcommand.
+**Limits, up front.** Run `angelcast family usage --format json` before a
+batch. A family gets 36 episodes per rolling 7 days, and at most 2 podcast
+creates or 1 series create per 5 minutes. Tell the parent how many fit and
+roughly how long the batch takes (about 5 minutes per pair of podcasts), then
+pace it yourself: after every second `podcast create`, sleep until
+`podcast_burst.retry_after` seconds have passed (or 300 seconds). Downloads do
+not count. A create past the burst limit prints
+`error: rate limited: 2 of 2 in the last 5 minutes; retry in <n>s`; sleep that
+long and retry once. On `weekly_limit_reached`, stop and report `resets_at`;
+do not retry.
+
+## 4. Deliver
+
+Ask once per session where episodes should go, offering both:
+
+**A folder.** Suggest `~/AngelCast/<topic-slug>/`, create it, and download each
+episode as it finishes:
+
+```
+angelcast podcast download <id> --wait --wait-timeout 900 -o <folder>/ --format json
+```
+
+The JSON line carries `title`, `path`, and `bytes`. A `failed` or `timed_out`
+podcast errors before anything is written: retry the download once with
+`--wait`; if it fails again, report the id.
+
+**A Yoto player.** Download to a folder first (the parent keeps the MP3 either
+way), then follow `references/yoto.md`: it uploads each MP3 to a "Make Your
+Own" playlist on my.yotoplay.com through the Playwright browser tools, using
+the parent's own Yoto login. It needs the Playwright MCP server; if the
+`mcp__playwright__*` tools are absent, give the parent the install line in
+that file and offer the folder path meanwhile.
+
+Report back with each episode's title and path (or Yoto track number), plus
+the prompt you used. Never auto-play; mention `angelcast podcast play <id>` as
+an option.
+
+## Destructive commands
+
+`podcast delete`, `series delete`, `family remove-member`, and `logout` are
+destructive. Run them only when the parent names the exact item in this
+conversation. Do not use any `admin` subcommand.
 
 ## Privacy
 
-The CLI sends the prompt, the child's first name and birth month, and receives
-the script and audio. Do not send anything else about the child. If the parent
-asks what AngelCast keeps, point them to PRIVACY.md in the repo.
+The CLI sends the prompt, the child's first name and birth month and year, and
+receives the script and audio. Send nothing else about the child. For what
+AngelCast keeps, point the parent to PRIVACY.md in the angelcast-cli repo.
