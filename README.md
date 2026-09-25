@@ -128,6 +128,8 @@ Using Claude Code, Codex, or another coding agent? Install the [agent skill](ski
 npx skills add myangel-ai/angelcast-cli
 ```
 
+The installer needs Node 22.20 or newer (`node --version`).
+
 Or add this to your project instructions and the agent can run the CLI on your behalf:
 
 ```markdown
