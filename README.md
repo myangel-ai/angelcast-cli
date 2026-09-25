@@ -28,15 +28,9 @@
   <img alt="Ages 5 to 12" src="docs/assets/readme/badge-ages.png" height="20">
 </p>
 
-```sh
-brew install myangel-ai/tap/angelcast
-angelcast family onboard --family-name Smith --email smith@example.com \
-  --child-name Mia --child-birth-month 6 --child-birth-year 2019
-angelcast podcast create --prompt "why do cats purr" --audience family
-angelcast podcast download <podcast-id> --wait
-```
-
-A few minutes later there is an MP3 in your working directory. Put it on a Yoto Card, your device, or anything that plays audio.
+<p align="center">
+  <img src="docs/assets/readme/quickstart.gif" alt="quickstart" width="600">
+</p>
 
 ## Install
 
@@ -56,7 +50,7 @@ Debian and Ubuntu users can grab the `.deb` from the [latest release](https://gi
 # 1. Sign up with your first listener. Age shapes the vocabulary, pacing, and topics.
 #    A magic link lands in your inbox; no password to remember.
 angelcast family onboard --family-name Smith --email smith@example.com \
-  --child-name Ada --child-birth-month 4 --child-birth-year 2018
+  --child-name Ava --child-birth-month 4 --child-birth-year 2018
 
 # 2. Make Ada's first episode. --i lets you pick her from a list instead of pasting an id.
 angelcast podcast create-ftue --prompt "outer space" --i
@@ -71,7 +65,8 @@ angelcast family add-member --first-name Sam --birth-month 9 --birth-year 2021
 angelcast podcast create --prompt "Why do volcanoes erupt?" --audience multi-kid --i
 ```
 
-Already have an account from the app? Skip step 1 and run `angelcast family login --email you@example.com`.
+Already have an account from the app? Skip step 1 and run `angelcast family login --email you@example.com --password`.
+If you haven't set a password email us at support@angelq.ai, and we will get back to you!
 
 Out of ideas? `angelcast podcast topic-suggestions` returns prompts picked for your kids' ages and interests.
 
@@ -117,9 +112,13 @@ Angelcast is built to be driven by scripts and AI agents as much as by people. O
 ```sh
 # Create an episode and capture its id
 id=$(angelcast podcast create --prompt "How do bees make honey?" --format json | jq -r .podcast_id)
+```
 
-# Play it once it is ready
-angelcast podcast play "$id" --wait
+Example of requests you can ask your agent for in natural language:
+```txt
+Create me 2 podcasts for my child Ava with about sharks in the atlantic ocean. Download both to a new folder that is called AvaSharks
+Create a series for me about dinosaurs that were in the midwest. Make it for the whole family. Save and upload to Yoto for me. 
+Please create 10 episdoes for a roadtrip through Massachusetts. Note the rate limits of 2 podcasts per 5 minutes and create accordingly. 
 ```
 
 Using Claude Code, Codex, or another coding agent? Install the [agent skill](skills/angelcast/SKILL.md):
@@ -141,17 +140,15 @@ Errors go to stderr as `error: <command> failed (<status>): <code>` and exit 1, 
 
 ## How it works, and why it is safe
 
-Every episode is made by [AngelQ](https://angelq.ai), the same engine behind the Angelcast app. It writes for the specific child: their age sets the vocabulary and pacing, and the interests you add shape the stories and examples. Every script is checked against AngelQ's kid-safety rules before it is voiced, so nothing reaches your kids that you would not want them to hear.
+Every episode is made by [AngelQ](https://angelq.ai). It writes for the audience, whether it is the family, child, or multiple children. Angelcast takes into account age to set vocabulary and pacing, and the interests you add shape the stories and examples. Every script is checked against AngelQ's kid-safety rules before it is voiced, so nothing reaches your kids that you would not want them to hear.
 
 ## Limits
-
-Each family can generate up to 36 episodes per rolling 7 days. Plans and pricing are at [angelq.ai](https://angelq.ai).
+Each family can generate up to 36 episodes per rolling 7 days. There is a rate limit of 2 podcasts or 1 series per 5 minutes. Plans and pricing are at [angelq.ai](https://angelq.ai).
 
 ## Help
 
 - Full command reference: [docs/CLI.md](docs/CLI.md)
-- Bugs and feature requests: [issues](https://github.com/myangel-ai/angelcast-cli/issues)
-- Everything else: hello@angelq.ai
+- Bugs, feature requests, and anything else: support@angelq.ai
 
 If your kids loved an episode, tell us with #angelcast. It is the best way to help other families find this.
 
