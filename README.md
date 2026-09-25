@@ -118,7 +118,7 @@ Example of requests you can ask your agent for in natural language:
 ```txt
 Create me 2 podcasts for my child Ava with about sharks in the atlantic ocean. Download both to a new folder that is called AvaSharks
 Create a series for me about dinosaurs that were in the midwest. Make it for the whole family. Save and upload to Yoto for me. 
-Please create 10 episdoes for a roadtrip through Massachusetts. Note the rate limits of 2 podcasts per 5 minutes and create accordingly. 
+Please create 10 episodes for a roadtrip through Massachusetts. Note the rate limits of 2 podcasts per 5 minutes and create accordingly. 
 ```
 
 Using Claude Code, Codex, or another coding agent? Install the [agent skill](skills/angelcast/SKILL.md):
@@ -143,18 +143,18 @@ Errors go to stderr as `error: <command> failed (<status>): <code>` and exit 1, 
 Every episode is made by [AngelQ](https://angelq.ai). It writes for the audience, whether it is the family, child, or multiple children. Angelcast takes into account age to set vocabulary and pacing, and the interests you add shape the stories and examples. Every script is checked against AngelQ's kid-safety rules before it is voiced, so nothing reaches your kids that you would not want them to hear.
 
 ## Limits
-Each family can generate up to 36 episodes per rolling 7 days. There is a rate limit of 2 podcasts or 1 series per 5 minutes. Plans and pricing are at [angelq.ai](https://angelq.ai).
+Each family can generate up to 36 episodes per rolling 7 days. There is a rate limit of 2 podcasts or 1 series per 5 minutes. Currently free.
 
 ## Help
 
 - Full command reference: [docs/CLI.md](docs/CLI.md)
 - Bugs, feature requests, and anything else: support@angelq.ai
 
-If your kids loved an episode, tell us with #angelcast. It is the best way to help other families find this.
+If your kids loved an episode, tell us on X @angelq_ai !
 
 ## We build safety in the open
 
-AngelQ co-created [KidRails](https://github.com/arcee-ai/KidRails) with [Arcee AI](https://www.arcee.ai): an open-source, child-safe language model and the training data and evals behind it, released so anyone can audit how age-appropriate AI should behave. The same thinking shapes every Angelcast episode.
+AngelQ co-created [KidRails](https://github.com/arcee-ai/KidRails) with [Arcee AI](https://www.arcee.ai): an open-source, child-safe language model and the training data and evals behind it, released so anyone can see and provide input to how AI should be used safely with kids. The same thinking shapes every Angelcast episode.
 
 ## License
 
