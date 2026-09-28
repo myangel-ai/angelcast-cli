@@ -33,7 +33,7 @@
 </p>
 
 ## Install
-Using Claude Code, Codex, or another coding agent? Install the [agent skill](skills/angelcast/SKILL.md) and run `/angelcast` to have the skill walk you through setup!
+Are you using Claude Code, Codex, or another coding agent? Install the [agent skill](skills/angelcast/SKILL.md) and run `/angelcast` to have the skill walk you through setup!
 
 ```sh
 npx skills add myangel-ai/angelcast-cli
