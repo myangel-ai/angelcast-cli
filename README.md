@@ -33,7 +33,13 @@
 </p>
 
 ## Install
+Using Claude Code, Codex, or another coding agent? Install the [agent skill](skills/angelcast/SKILL.md):
 
+```sh
+npx skills add myangel-ai/angelcast-cli
+```
+
+Are you a more traditional CLI user? We've got you covered too! 
 ```sh
 curl -fsSL https://angelq.ai/install.sh | sh
 ```
