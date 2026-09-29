@@ -148,6 +148,8 @@ Errors go to stderr as `error: <command> failed (<status>): <code>` and exit 1, 
 
 Every episode is made by [AngelQ](https://angelq.ai). It writes for the audience, whether it is the family, child, or multiple children. Angelcast takes into account age to set vocabulary and pacing, and the interests you add shape the stories and examples. Every script is checked against AngelQ's kid-safety rules before it is voiced, so nothing reaches your kids that you would not want them to hear.
 
+We use Mini Max H3 to generate some of our audio content.
+
 ## Limits
 Each family can generate up to 36 episodes per rolling 7 days. There is a rate limit of 2 podcasts or 1 series per 5 minutes. Currently free.
 
