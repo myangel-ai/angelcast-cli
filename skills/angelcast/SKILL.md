@@ -19,7 +19,7 @@ usage mistakes exit 2.
 Check first: `angelcast --version`. If it is missing:
 
 - Homebrew present (`command -v brew`): `brew install myangel-ai/tap/angelcast`
-- Otherwise: `curl -fsSL https://angelq.ai/install.sh | sh`
+- Otherwise: `curl -fsSL https://github.com/myangel-ai/angelcast-cli/releases/latest/download/angelcast-cli-installer.sh | sh`
 - Debian/Ubuntu users who prefer a package: the `.deb` on
   https://github.com/myangel-ai/angelcast-cli/releases/latest
 

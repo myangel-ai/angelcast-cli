@@ -41,7 +41,7 @@ npx skills add myangel-ai/angelcast-cli
 
 Are you a more traditional CLI user? We've got you covered too! 
 ```sh
-curl -fsSL https://angelq.ai/install.sh | sh
+curl -fsSL https://github.com/myangel-ai/angelcast-cli/releases/latest/download/angelcast-cli-installer.sh | sh
 ```
 
 ```sh
