@@ -6,7 +6,7 @@ up, generate episodes and series, and play or download the audio.
 ## Install
 
 ```bash
-curl -fsSL https://angelq.ai/install.sh | sh
+curl -fsSL https://github.com/myangel-ai/angelcast-cli/releases/latest/download/angelcast-cli-installer.sh | sh
 ```
 
 ```bash
