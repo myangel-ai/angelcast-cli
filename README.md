@@ -165,5 +165,5 @@ If your kids loved an episode, tell us on X @angelq_ai !
 AngelQ co-created [KidRails](https://github.com/arcee-ai/KidRails) with [Arcee AI](https://www.arcee.ai): an open-source, child-safe language model and the training data and evals behind it, released so anyone can see and provide input to how AI should be used safely with kids. The same thinking shapes every Angelcast episode.
 
 ## License
-
+[Terms of Use](https://www.angelq.ai/terms-of-use)
 [Apache 2.0](LICENSE). AngelCast and AngelQ are trademarks of Angel AI Company; the license does not grant permission to use them.
