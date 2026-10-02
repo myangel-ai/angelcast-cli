@@ -166,4 +166,5 @@ AngelQ co-created [KidRails](https://github.com/arcee-ai/KidRails) with [Arcee A
 
 ## License
 [Terms of Use](https://www.angelq.ai/terms-of-use)
+
 [Apache 2.0](LICENSE). AngelCast and AngelQ are trademarks of Angel AI Company; the license does not grant permission to use them.
