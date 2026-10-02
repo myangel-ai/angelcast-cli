@@ -23,8 +23,9 @@ example invocations, and `angelcast docs` prints the reference below offline.
 ## Getting started
 
 Run `angelcast` on its own to see where to begin. A bare
-`angelcast family onboard` walks you through signing up — family name, email,
-password, and your children — then saves your session:
+`angelcast family onboard` walks you through signing up — accepting the Terms
+of Use, family name, email, password, and your children — then saves your
+session:
 
 ```bash
 angelcast family onboard
@@ -73,6 +74,13 @@ angelcast family get
   password is asked for twice), or read the password from stdin (one per line,
   in prompt order, unconfirmed) with `--password-stdin` for scripts — so
   nothing lands in `ps` or shell history.
+- **Terms of Use.** `family onboard` asks you to accept the
+  [Terms of Use](https://www.angelq.ai/terms-of-use) before it creates
+  anything, and `family login` asks when your family hasn't accepted the
+  current version. Your acceptance is kept with your account, so logging in on
+  another machine doesn't ask again. Declining exits 1 without creating a
+  family or saving a session. Without a terminal, pass `--accept-terms`;
+  otherwise the command fails rather than waiting for an answer.
 - `angelcast logout` forgets the current host's entry; `logout --all` forgets
   every host.
 
@@ -167,18 +175,21 @@ Usage: angelcast family onboard [OPTIONS]
 | `--child-name <CHILD_NAME>` | First name of the first child. |
 | `--child-birth-month <CHILD_BIRTH_MONTH>` | Birth month (1–12) of the first child. |
 | `--child-birth-year <CHILD_BIRTH_YEAR>` | Birth year of the first child, e.g. 2018; no earlier than 90 years ago and not in the future. |
+| `--accept-terms` | Accept the Terms of Use (https://www.angelq.ai/terms-of-use) instead of being asked. |
 
 Examples:
 
 ```bash
 angelcast family onboard
-printf '%s\n' "$PW" | angelcast family onboard --family-name Smith --email smith@example.com --password-stdin
+printf '%s\n' "$PW" | angelcast family onboard --family-name Smith --email smith@example.com --password-stdin --accept-terms
 angelcast family onboard --family-name Smith --email smith@example.com --child-name Ada --child-birth-month 4 --child-birth-year 2018
 ```
 
 ### `angelcast family login`
 
 Log in with email and password.
+
+Asks you to accept the Terms of Use if your family hasn't accepted the current version.
 
 ```
 Usage: angelcast family login [OPTIONS] --email <EMAIL>
@@ -187,6 +198,7 @@ Usage: angelcast family login [OPTIONS] --email <EMAIL>
 | Argument | Description |
 |---|---|
 | `--email <EMAIL>` **(required)** | The family's login email. |
+| `--accept-terms` | Accept the Terms of Use (https://www.angelq.ai/terms-of-use) instead of being asked. |
 
 Examples:
 
@@ -356,7 +368,7 @@ Usage: angelcast podcast [OPTIONS] <COMMAND>
 | [`topic-suggestions`](#angelcast-podcast-topic-suggestions) | Suggest episode topics for the family |
 | [`get`](#angelcast-podcast-get) | Show one podcast |
 | [`delete`](#angelcast-podcast-delete) | Delete a podcast. Destructive |
-| [`outputs`](#angelcast-podcast-outputs) | Print a finished podcast's raw generation outputs |
+| [`outputs`](#angelcast-podcast-outputs) | Print a podcast's title, description, and safety flags |
 | [`download`](#angelcast-podcast-download) | Save a podcast's audio as an mp3 |
 | [`play`](#angelcast-podcast-play) | Play a podcast through your computer's audio player |
 | [`list`](#angelcast-podcast-list) | List the family's podcasts |
@@ -475,9 +487,9 @@ angelcast podcast delete <podcast-id>
 
 ### `angelcast podcast outputs`
 
-Print a finished podcast's raw generation outputs.
+Print a podcast's title, description, and safety flags.
 
-To save the audio as an mp3, use `download`.
+Audio and artwork are shown by size; to save the audio as an mp3, use `download`.
 
 ```
 Usage: angelcast podcast outputs [OPTIONS] <PODCAST_ID>

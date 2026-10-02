@@ -30,29 +30,36 @@ Re-run `angelcast --version` to confirm.
 
 `angelcast whoami --format json`. A 401 means no session.
 
+**Terms of Use.** Before running `family onboard` or `family login`, show the
+parent the link https://www.angelq.ai/terms-of-use and ask them directly
+whether they accept the angelq Terms of Use. You never accept for them. Pass
+`--accept-terms` only after the parent answers with an explicit yes. A no, or
+no answer, means stop: do not onboard or log in.
+
 **New family.** Ask for: family (last) name, email, and for the first child a
 first name, birth month (1-12) and birth year. Nothing else is needed.
 
-The CLI needs a login password. `--password` prompts with echo off, which
-fails in an agent shell (`stdin is not a terminal`), so generate one and pipe
-it with `--password-stdin`; the password never touches the command line:
+The CLI needs a login password. At a terminal `family onboard` prompts for
+it, which fails in an agent shell, so generate one and pipe it with
+`--password-stdin`; the password never touches the command line:
 
 ```
 PW=$(openssl rand -base64 18 | tr -d '/+=')
 printf '%s\n' "$PW" | angelcast family onboard --family-name <Name> --email <email> \
-  --password-stdin --child-name <First> --child-birth-month <M> --child-birth-year <YYYY> --format json | tail -n +2
+  --password-stdin --accept-terms --child-name <First> --child-birth-month <M> --child-birth-year <YYYY> --format json | tail -n +2
 echo "$PW"
 ```
 
 Show the password once and tell the parent to store it; it is their
 `family login` password from now on. If the parent would rather choose it,
-print the command with `--password` for them to run in their own terminal.
+print `angelcast family onboard` for them to run in their own terminal; it
+walks them through every field and prompts for the password.
 `tail -n +2` skips the session cookie printed on the first line; the family
 JSON with each member's `id` follows, and the session is saved.
 
-**Existing app account.** `printf '%s\n' "$PW" | angelcast family login --email <email> --password-stdin`.
-If it says `no CLI password set for this email`, the parent emails
-support@angelq.ai for one; stop there.
+**Existing app account.** `printf '%s\n' "$PW" | angelcast family login --email <email> --password-stdin --accept-terms`.
+If it says `This account has no password yet; contact support@angelq.ai to set one.`,
+pass that on to the parent; stop there.
 
 **More kids.** `angelcast family add-member --first-name <First> --birth-month <M> --birth-year <YYYY> --format json`.
 
