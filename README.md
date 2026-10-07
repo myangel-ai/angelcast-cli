@@ -21,7 +21,6 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="License Apache-2.0" src="docs/assets/readme/badge-license.png" height="20"></a>
   <img alt="brew install myangel-ai/tap/angelcast" src="docs/assets/readme/badge-brew.png" height="20">
   <img alt="Linux x86_64 and aarch64" src="docs/assets/readme/badge-linux.png" height="20">
   <img alt="Agent skill: npx skills add" src="docs/assets/readme/badge-skill.png" height="20">
@@ -165,6 +164,5 @@ If your kids loved an episode, tell us on X @angelq_ai !
 AngelQ co-created [KidRails](https://github.com/arcee-ai/KidRails) with [Arcee AI](https://www.arcee.ai): an open-source, child-safe language model and the training data and evals behind it, released so anyone can see and provide input to how AI should be used safely with kids. The same thinking shapes every Angelcast episode.
 
 ## License
-[Terms of Use](https://www.angelq.ai/terms-of-use)
 
-[Apache 2.0](LICENSE). AngelCast and AngelQ are trademarks of Angel AI Company; the license does not grant permission to use them.
+Copyright 2026 Angel AI Company. All rights reserved. Use of AngelCast is subject to the [AngelQ Terms of Use](https://www.angelq.ai/terms-of-use). AngelCast and AngelQ are trademarks of Angel AI Company.
